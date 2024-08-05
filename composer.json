@@ -1,0 +1,43 @@
+{
+    "name": "ucraft-com/thumbnail-generator",
+    "description": "This PHP package provides a comprehensive solution for generating thumbnails from various file types, including images, videos, PDF documents, and audio files.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Uc\\ThumbnailGenerator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Uc\\ThumbnailGenerator\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tigran Mesropyan",
+            "email": "tiko@ucraft.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.1",
+        "ext-imagick": "*",
+        "php-ffmpeg/php-ffmpeg": "^1.2",
+        "phpoffice/phpspreadsheet": "^2.2",
+        "phpoffice/phpword": "^1.2",
+        "dompdf/dompdf": "^3.0",
+        "ucraft-com/image-manipulator": "0.0.1"
+    },
+    "require-dev": {
+        "orchestra/testbench": "8.24.0",
+        "phpunit/phpunit": "9.6.x-dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Uc\\ThumbnailGenerator\\ThumbnailGeneratorServiceProvider"
+            ]
+        }
+    }
+}
