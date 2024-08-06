@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator\Drivers;
 
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 
 /**
  * Interface declares main functionality for thumbnail generation drivers.
@@ -16,20 +16,20 @@ interface ThumbnailGenerationDriverInterface
     /**
      * Determine whether the driver supports given file to generate thumbnail.
      *
-     * @param File $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return bool
      */
-    public function supports(File $file): bool;
+    public function supports(UploadedFile $file): bool;
 
     /**
      * Generate thumbnail for given file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
      */
-    public function generate(File $file, int $width, int $height): array;
+    public function generate(UploadedFile $file, int $width, int $height): array;
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator\Processors;
 
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 use PhpOffice\PhpWord\Exception\Exception as PhpWordException;
 use PhpOffice\PhpWord\IOFactory;
@@ -15,6 +15,7 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 use function base_path;
 use function stream_get_meta_data;
 use function tmpfile;
+use function pathinfo;
 
 /**
  * Utility class for generating thumbnails of various documents.
@@ -35,14 +36,14 @@ class DocumentProcessor
     /**
      * Generate thumbnail from docx document.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception|\ImagickException
+     * @throws \ImagickException
      */
-    public function generateThumbnailFromDocx(File $file, int $width, int $height): array
+    public function generateThumbnailFromDocx(UploadedFile $file, int $width, int $height): array
     {
         $writer = $this->createWordWriter('Word2007', $file->path());
 
@@ -52,14 +53,14 @@ class DocumentProcessor
     /**
      * Generate thumbnail from ODT (OpenOffice format) document.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception|\ImagickException
+     * @throws \ImagickException
      */
-    public function generateThumbnailFromOdt(File $file, int $width, int $height): array
+    public function generateThumbnailFromOdt(UploadedFile $file, int $width, int $height): array
     {
         $writer = $this->createWordWriter('ODText', $file->path());
 
@@ -69,14 +70,14 @@ class DocumentProcessor
     /**
      * Generate thumbnail from Rich text document.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception|\ImagickException
+     * @throws \ImagickException
      */
-    public function generateThumbnailFromRtf(File $file, int $width, int $height): array
+    public function generateThumbnailFromRtf(UploadedFile $file, int $width, int $height): array
     {
         $writer = $this->createWordWriter('RTF', $file->path());
 
@@ -146,6 +147,6 @@ class DocumentProcessor
      */
     protected function generateThumbnailFromPdf(string $path, int $width, int $height): array
     {
-        return $this->pdfProcessor->generateThumbnail(new File($path), $width, $height);
+        return $this->pdfProcessor->generateThumbnail(new UploadedFile($path, pathinfo($path, PATHINFO_FILENAME)), $width, $height);
     }
 }

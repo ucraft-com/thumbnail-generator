@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator\Processors;
 
+use Illuminate\Http\UploadedFile;
 use Uc\ImageManipulator\ImageManipulator;
 use Illuminate\Http\File;
 use Imagick;
@@ -24,14 +25,14 @@ class PdfProcessor
     /**
      * Generate thumbnail of given file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
      * @throws \ImagickException
      */
-    public function generateThumbnail(File $file, int $width, int $height): array
+    public function generateThumbnail(UploadedFile $file, int $width, int $height): array
     {
         $content = $this->getFirstPageContent($file);
 
@@ -42,12 +43,12 @@ class PdfProcessor
     }
 
     /**
-     * @param \Illuminate\Http\File $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return string
      * @throws \ImagickException
      */
-    protected function getFirstPageContent(File $file): string
+    protected function getFirstPageContent(UploadedFile $file): string
     {
         try {
             $imagick = new Imagick();

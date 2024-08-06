@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator\Drivers;
 
+use Illuminate\Http\UploadedFile;
 use Uc\ThumbnailGenerator\Processors\PdfProcessor;
-use Illuminate\Http\File;
 
 /**
  * Driver for generating thumbnails for pdf documents.
@@ -26,11 +26,11 @@ class PdfDriver implements ThumbnailGenerationDriverInterface
     /**
      * @inheritDoc
      *
-     * @param File $file
+     * @param UploadedFile $file
      *
      * @return bool
      */
-    public function supports(File $file): bool
+    public function supports(UploadedFile $file): bool
     {
         return $file->getExtension() === 'pdf';
     }
@@ -38,14 +38,14 @@ class PdfDriver implements ThumbnailGenerationDriverInterface
     /**
      * Generate thumbnail for given file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
      * @throws \ImagickException
      */
-    public function generate(File $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): array
     {
         return $this->pdfProcessor->generateThumbnail($file, $width, $height);
     }
