@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator\Tests\Unit;
 
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Uc\ImageManipulator\ImageManipulator;
@@ -18,7 +18,7 @@ class AudioThumbnailGeneratorTest extends AbstractThumbnailGenerator
     {
         $generator = $this->getThumbnailGenerator();
         ['frameContent' => $content] = $generator->generate(
-            new File(__DIR__.'/sources/audio_with_artwork.mp3'),
+            new UploadedFile(__DIR__.'/sources/audio_with_artwork.mp3', 'audio_with_artwork.mp3'),
             100,
             100
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator\Drivers;
 
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Uc\ThumbnailGenerator\Processors\FFMpegProcessor;
 
 use function in_array;
@@ -23,11 +23,11 @@ class AudioDriver implements ThumbnailGenerationDriverInterface
     /**
      * Determine whether the driver supports given file to generate thumbnail.
      *
-     * @param \Illuminate\Http\File $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return bool
      */
-    public function supports(File $file): bool
+    public function supports(UploadedFile $file): bool
     {
         return in_array($file->getExtension(), ['mpga', 'mp3', 'aac', 'm4a'], true);
     }
@@ -35,13 +35,13 @@ class AudioDriver implements ThumbnailGenerationDriverInterface
     /**
      * Generate thumbnail for given file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
      */
-    public function generate(File $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): array
     {
         return $this->processor->generateAudioThumbnail($file, $width, $height);
     }

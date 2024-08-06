@@ -8,7 +8,7 @@ use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Media\Audio;
 use FFMpeg\Media\Frame;
 use FFMpeg\Media\Video;
-use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Uc\ImageManipulator\ImageManipulator;
 use FFMpeg\FFMpeg;
 
@@ -43,13 +43,13 @@ class FFMpegProcessor
     /**
      * Generate thumbnail for given video file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int|null              $width
-     * @param int|null              $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int|null                      $width
+     * @param int|null                      $height
      *
      * @return array
      */
-    public function generateVideoThumbnail(File $file, ?int $width, ?int $height): array
+    public function generateVideoThumbnail(UploadedFile $file, ?int $width, ?int $height): array
     {
         $media = $this->open($file);
 
@@ -69,13 +69,13 @@ class FFMpegProcessor
     /**
      * Generate thumbnail for given audio file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int|null              $width
-     * @param int|null              $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int|null                      $width
+     * @param int|null                      $height
      *
      * @return array
      */
-    public function generateAudioThumbnail(File $file, ?int $width, ?int $height): array
+    public function generateAudioThumbnail(UploadedFile $file, ?int $width, ?int $height): array
     {
         $media = $this->open($file);
 
@@ -92,11 +92,11 @@ class FFMpegProcessor
     /**
      * Open given media file.
      *
-     * @param \Illuminate\Http\File $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return \FFMpeg\Media\Audio|\FFMpeg\Media\Video
      */
-    protected function open(File $file): Video|Audio
+    protected function open(UploadedFile $file): Video|Audio
     {
         return $this->ffmpeg->open($file->path());
     }
@@ -104,11 +104,11 @@ class FFMpegProcessor
     /**
      * Calculate the moment for taking the video snapshot for thumbnail.
      *
-     * @param \Illuminate\Http\File $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return float
      */
-    protected function calculateThumbnailMoment(File $file): float
+    protected function calculateThumbnailMoment(UploadedFile $file): float
     {
         $duration = $this->getDuration($file);
 
@@ -118,11 +118,11 @@ class FFMpegProcessor
     /**
      * Return file duration in seconds
      *
-     * @param \Illuminate\Http\File $file
+     * @param \Illuminate\Http\UploadedFile $file
      *
      * @return float
      */
-    public function getDuration(File $file): float
+    public function getDuration(UploadedFile $file): float
     {
         return (float)$this->ffmpeg->getFFProbe()
             ->format($file->path())->get('duration', 0);
@@ -156,6 +156,6 @@ class FFMpegProcessor
         $frame->save($path, true);
         $content = @file_get_contents($path);
 
-        return (string)$this->imageManipulator->resize((string)$content, $width, $height);
+        return $this->imageManipulator->resize((string)$content, $width, $height);
     }
 }

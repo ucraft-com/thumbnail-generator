@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Uc\ThumbnailGenerator;
 
+use Illuminate\Http\UploadedFile;
 use Uc\ThumbnailGenerator\Drivers\ThumbnailGenerationDriverInterface;
-use Illuminate\Http\File;
 
 /**
  * Utility to generate thumbnails for specified files.
@@ -32,13 +32,13 @@ class ThumbnailGenerator
     /**
      * Generate thumbnail of given file.
      *
-     * @param \Illuminate\Http\File $file
-     * @param int                   $width
-     * @param int                   $height
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param int                           $width
+     * @param int                           $height
      *
      * @return array
      */
-    public function generate(File $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): array
     {
         foreach ($this->drivers as $driver) {
             if ($driver->supports($file)) {
