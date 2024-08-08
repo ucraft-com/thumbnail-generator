@@ -30,7 +30,7 @@ class ImageDriver implements ThumbnailGenerationDriverInterface
      */
     public function supports(UploadedFile $file): bool
     {
-        return in_array($file->getExtension(), ['jpeg', 'jpg', 'png', 'webp', 'svg', 'gif'], true);
+        return in_array($file->guessExtension(), ['jpeg', 'jpg', 'png', 'webp', 'svg', 'gif'], true);
     }
 
     /**
@@ -40,16 +40,16 @@ class ImageDriver implements ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         $content = (string)file_get_contents($file->path());
 
         if (in_array($file->getMimeType(), ['image/svg+xml', 'application/svg+xml'], true)) {
-            return ['frameContent' => $content, 'webPContent' => null];
+            return $content;
         }
 
-        return ['frameContent' => $this->imageManipulator->resize($content, $width, $height), 'webPContent' => null];
+        return $this->imageManipulator->resize($content, $width, $height);
     }
 }

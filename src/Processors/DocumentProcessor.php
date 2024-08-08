@@ -40,10 +40,10 @@ class DocumentProcessor
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generateThumbnailFromDocx(UploadedFile $file, int $width, int $height): array
+    public function generateThumbnailFromDocx(UploadedFile $file, int $width, int $height): string|null
     {
         $writer = $this->createWordWriter('Word2007', $file->path());
 
@@ -57,10 +57,10 @@ class DocumentProcessor
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generateThumbnailFromOdt(UploadedFile $file, int $width, int $height): array
+    public function generateThumbnailFromOdt(UploadedFile $file, int $width, int $height): string|null
     {
         $writer = $this->createWordWriter('ODText', $file->path());
 
@@ -74,10 +74,10 @@ class DocumentProcessor
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generateThumbnailFromRtf(UploadedFile $file, int $width, int $height): array
+    public function generateThumbnailFromRtf(UploadedFile $file, int $width, int $height): string|null
     {
         $writer = $this->createWordWriter('RTF', $file->path());
 
@@ -110,14 +110,13 @@ class DocumentProcessor
      * @param int                                                                                                                   $width
      * @param int                                                                                                                   $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    protected function generateThumbnail(IWriter|WriterInterface|PDF|null $writer, int $width, int $height): array
+    protected function generateThumbnail(IWriter|WriterInterface|PDF|null $writer, int $width, int $height): string|null
     {
         if ($writer === null) {
-            return ['frameContent' => null, 'webPContent' => null];
+            return null;
         }
 
         $writer->save($path = $this->getTemporaryPath());
@@ -142,11 +141,15 @@ class DocumentProcessor
      * @param int    $width
      * @param int    $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    protected function generateThumbnailFromPdf(string $path, int $width, int $height): array
+    protected function generateThumbnailFromPdf(string $path, int $width, int $height): string|null
     {
-        return $this->pdfProcessor->generateThumbnail(new UploadedFile($path, pathinfo($path, PATHINFO_FILENAME)), $width, $height);
+        return $this->pdfProcessor->generateThumbnail(
+            new UploadedFile($path, pathinfo($path, PATHINFO_FILENAME)),
+            $width,
+            $height
+        );
     }
 }

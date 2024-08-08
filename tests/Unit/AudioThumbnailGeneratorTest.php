@@ -17,7 +17,7 @@ class AudioThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_WhenAudioHasArtwork_ReturnsThumbnail(): void
     {
         $generator = $this->getThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/audio_with_artwork.mp3', 'audio_with_artwork.mp3'),
             100,
             100

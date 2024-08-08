@@ -27,7 +27,7 @@ class DocxDriver implements ThumbnailGenerationDriverInterface
      */
     public function supports(UploadedFile $file): bool
     {
-        return $file->getExtension() === 'docx';
+        return $file->guessExtension() === 'docx';
     }
 
     /**
@@ -37,10 +37,10 @@ class DocxDriver implements ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         return $this->documentProcessor->generateThumbnailFromDocx($file, $width, $height);
     }

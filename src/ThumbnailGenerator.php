@@ -36,9 +36,9 @@ class ThumbnailGenerator
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         foreach ($this->drivers as $driver) {
             if ($driver->supports($file)) {
@@ -46,6 +46,6 @@ class ThumbnailGenerator
             }
         }
 
-        return ['frameContent' => null, 'webPContent' => null];
+        return null;
     }
 }

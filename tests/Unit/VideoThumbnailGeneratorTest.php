@@ -17,7 +17,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularMp4_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/mp4.mp4', 'mp4.mp4'),
             100,
             100
@@ -29,7 +29,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularFlv_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/flv.flv', 'flv.flv'),
             100,
             100
@@ -41,7 +41,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularAvi_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/avi.avi', 'avi.avi'),
             100,
             100
@@ -53,7 +53,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularMkv_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/mkv.mkv', 'mkv.mkv'),
             100,
             100
@@ -65,7 +65,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularAsf_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/asf.asf', 'asf.asf'),
             100,
             100
@@ -77,7 +77,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularWebm_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/webm.webm', 'webm.webm'),
             100,
             100
@@ -89,7 +89,7 @@ class VideoThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularMov_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/mov.mov', 'mov.mov'),
             100,
             100

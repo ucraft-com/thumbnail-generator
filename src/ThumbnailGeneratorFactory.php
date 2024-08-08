@@ -30,6 +30,27 @@ class ThumbnailGeneratorFactory
     }
 
     /**
+     * Create instance of ThumbnailGenerator powered with all available drivers.
+     *
+     * @return \Uc\ThumbnailGenerator\ThumbnailGenerator
+     */
+    public function createGenericThumbnailGenerator(): ThumbnailGenerator
+    {
+        return new ThumbnailGenerator(
+            new ImageDriver(
+                $this->imageManipulator
+            ),
+            new AudioDriver(
+                $this->ffmpegProcessor
+            ),
+            new VideoDriver(
+                $this->ffmpegProcessor
+            ),
+            ...$this->createDocumentThumbnailDrivers(),
+        );
+    }
+
+    /**
      * Create instance of ThumbnailGenerator powered with ImageDriver.
      *
      * @return \Uc\ThumbnailGenerator\ThumbnailGenerator
@@ -78,15 +99,20 @@ class ThumbnailGeneratorFactory
      */
     public function createDocumentThumbnailGenerator(): ThumbnailGenerator
     {
+        return new ThumbnailGenerator(...$this->createDocumentThumbnailDrivers());
+    }
+
+    protected function createDocumentThumbnailDrivers(): array
+    {
         $pdfProcessor = $this->createPdfProcessor();
         $documentProcessor = $this->createDocumentProcessor($pdfProcessor);
 
-        $pdfDriver = new PdfDriver($pdfProcessor);
-        $docxDriver = new DocxDriver($documentProcessor);
-        $odtDriver = new OdtDriver($documentProcessor);
-        $rtfDriver = new RtfDriver($documentProcessor);
-
-        return new ThumbnailGenerator($pdfDriver, $docxDriver, $odtDriver, $rtfDriver);
+        return [
+            new PdfDriver($pdfProcessor),
+            new DocxDriver($documentProcessor),
+            new OdtDriver($documentProcessor),
+            new RtfDriver($documentProcessor),
+        ];
     }
 
     /**

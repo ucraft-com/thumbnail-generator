@@ -30,5 +30,6 @@ php artisan vendor:publish --provider="Uc\ThumbnailGenerator\ThumbnailGeneratorS
 ```php
 use Uc\ThumbnailGenerator\ThumbnailGeneratorFactory;
 
-$gen = ThumbnailGeneratorFactory::createImageThumbnailGenerator();
-['frameContent' => $content, 'webPContent' => $webP] = $gen->generate($file, 200, 200);
+$factory = new ThumbnailGeneratorFactory(...);
+$gen = $factory->createImageThumbnailGenerator();
+$content = $gen->generate($file, 200, 200);

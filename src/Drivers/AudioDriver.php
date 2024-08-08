@@ -29,7 +29,7 @@ class AudioDriver implements ThumbnailGenerationDriverInterface
      */
     public function supports(UploadedFile $file): bool
     {
-        return in_array($file->getExtension(), ['mpga', 'mp3', 'aac', 'm4a'], true);
+        return in_array($file->guessExtension(), ['mpga', 'mp3', 'aac', 'm4a'], true);
     }
 
     /**
@@ -39,9 +39,9 @@ class AudioDriver implements ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         return $this->processor->generateAudioThumbnail($file, $width, $height);
     }

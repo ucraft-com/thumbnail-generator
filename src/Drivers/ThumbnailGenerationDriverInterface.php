@@ -29,7 +29,7 @@ interface ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generate(UploadedFile $file, int $width, int $height): array;
+    public function generate(UploadedFile $file, int $width, int $height): string|null;
 }

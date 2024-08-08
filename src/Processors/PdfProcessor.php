@@ -6,7 +6,6 @@ namespace Uc\ThumbnailGenerator\Processors;
 
 use Illuminate\Http\UploadedFile;
 use Uc\ImageManipulator\ImageManipulator;
-use Illuminate\Http\File;
 use Imagick;
 use ImagickException;
 
@@ -29,17 +28,13 @@ class PdfProcessor
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generateThumbnail(UploadedFile $file, int $width, int $height): array
+    public function generateThumbnail(UploadedFile $file, int $width, int $height): string|null
     {
         $content = $this->getFirstPageContent($file);
-
-        return [
-            'frameContent' => $this->imageManipulator->resize($content, $width, $height),
-            'webPContent'  => null
-        ];
+        return $this->imageManipulator->resize($content, $width, $height);
     }
 
     /**
