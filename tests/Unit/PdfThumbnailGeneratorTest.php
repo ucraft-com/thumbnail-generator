@@ -17,7 +17,7 @@ class PdfThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_Regular_ReturnThumbnail(): void
     {
         $generator = $this->createThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/pdf.pdf', 'pdf.pdf'),
             200,
             300

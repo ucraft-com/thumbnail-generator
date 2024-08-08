@@ -29,7 +29,11 @@ class VideoDriver implements ThumbnailGenerationDriverInterface
      */
     public function supports(UploadedFile $file): bool
     {
-        return in_array($file->getExtension(), ['mp4', 'flv', 'avi', 'mkv', 'asf', 'webm', 'mov', 'ogg', 'ogv', 'svg'], true);
+        return in_array(
+            $file->guessExtension(),
+            ['mp4', 'flv', 'avi', 'mkv', 'asf', 'webm', 'mov', 'ogg', 'ogv', 'svg'],
+            true
+        );
     }
 
     /**
@@ -39,9 +43,9 @@ class VideoDriver implements ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         return $this->processor->generateVideoThumbnail($file, $width, $height);
     }

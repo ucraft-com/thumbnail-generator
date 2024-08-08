@@ -27,7 +27,7 @@ class OdtDriver implements ThumbnailGenerationDriverInterface
      */
     public function supports(UploadedFile $file): bool
     {
-        return $file->getExtension() === 'odt';
+        return $file->guessExtension() === 'odt';
     }
 
     /**
@@ -37,10 +37,10 @@ class OdtDriver implements ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         return $this->documentProcessor->generateThumbnailFromOdt($file, $width, $height);
     }

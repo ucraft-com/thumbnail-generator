@@ -20,7 +20,7 @@ class DocumentThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularDocx_ReturnThumbnail(): void
     {
         $generator = $this->getThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/document.docx', 'document.docx'),
             100,
             100
@@ -32,7 +32,7 @@ class DocumentThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_RegularOdt_ReturnThumbnail(): void
     {
         $generator = $this->getThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/document.odt', 'document.odt'),
             150,
             200
@@ -44,7 +44,7 @@ class DocumentThumbnailGeneratorTest extends AbstractThumbnailGenerator
     public function testGenerate_Regular_ReturnThumbnail(): void
     {
         $generator = $this->getThumbnailGenerator();
-        ['frameContent' => $content] = $generator->generate(
+        $content = $generator->generate(
             new UploadedFile(__DIR__.'/sources/document.rtf', 'document.rtf'),
             100,
             100

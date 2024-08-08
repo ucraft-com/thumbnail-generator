@@ -47,23 +47,20 @@ class FFMpegProcessor
      * @param int|null                      $width
      * @param int|null                      $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generateVideoThumbnail(UploadedFile $file, ?int $width, ?int $height): array
+    public function generateVideoThumbnail(UploadedFile $file, ?int $width, ?int $height): string|null
     {
         $media = $this->open($file);
 
         if (!$media instanceof Video) {
-            return [];
+            return null;
         }
 
         $second = $this->calculateThumbnailMoment($file);
         $frame = $this->retrieveFrame($media, $second);
 
-        $frameContent = $this->getFrameContent($frame, $width, $height);
-        $webPContent = $this->imageManipulator->convertToWebP($frameContent);
-
-        return ['frameContent' => $frameContent, 'webPContent' => $webPContent];
+        return $this->getFrameContent($frame, $width, $height);
     }
 
     /**
@@ -73,20 +70,18 @@ class FFMpegProcessor
      * @param int|null                      $width
      * @param int|null                      $height
      *
-     * @return array
+     * @return string|null
      */
-    public function generateAudioThumbnail(UploadedFile $file, ?int $width, ?int $height): array
+    public function generateAudioThumbnail(UploadedFile $file, ?int $width, ?int $height): string|null
     {
         $media = $this->open($file);
 
         if (!$media instanceof Video) {
-            return [];
+            return null;
         }
 
         $frame = $this->retrieveFrame($media, 0.0);
-        $frameContent = $this->getFrameContent($frame, $width, $height);
-
-        return ['frameContent' => $frameContent, 'webPContent' => null];
+        return $this->getFrameContent($frame, $width, $height);
     }
 
     /**
@@ -148,14 +143,18 @@ class FFMpegProcessor
      * @param int|null            $width
      * @param int|null            $height
      *
-     * @return string
+     * @return string|null
      */
-    protected function getFrameContent(Frame $frame, ?int $width, ?int $height): string
+    protected function getFrameContent(Frame $frame, ?int $width, ?int $height): string|null
     {
         $path = stream_get_meta_data(tmpfile())['uri'];
         $frame->save($path, true);
         $content = @file_get_contents($path);
 
-        return $this->imageManipulator->resize((string)$content, $width, $height);
+        if (empty($content)) {
+            return null;
+        }
+
+        return $this->imageManipulator->resize($content, $width, $height);
     }
 }

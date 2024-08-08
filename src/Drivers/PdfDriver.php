@@ -32,7 +32,7 @@ class PdfDriver implements ThumbnailGenerationDriverInterface
      */
     public function supports(UploadedFile $file): bool
     {
-        return $file->getExtension() === 'pdf';
+        return $file->guessExtension() === 'pdf';
     }
 
     /**
@@ -42,10 +42,10 @@ class PdfDriver implements ThumbnailGenerationDriverInterface
      * @param int                           $width
      * @param int                           $height
      *
-     * @return array
+     * @return string|null
      * @throws \ImagickException
      */
-    public function generate(UploadedFile $file, int $width, int $height): array
+    public function generate(UploadedFile $file, int $width, int $height): string|null
     {
         return $this->pdfProcessor->generateThumbnail($file, $width, $height);
     }

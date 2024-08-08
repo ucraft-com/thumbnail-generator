@@ -19,7 +19,7 @@ use Uc\ThumbnailGenerator\Processors\PdfProcessor;
 /**
  * Factory for creating thumbnail generator instances.
  *
- * @package Uc\ThumbnailGeneratorFactory
+ * @package Uc\ThumbnailGenerator
  */
 class ThumbnailGeneratorFactory
 {
@@ -27,6 +27,27 @@ class ThumbnailGeneratorFactory
         protected FFMpegProcessor $ffmpegProcessor,
         protected ImageManipulator $imageManipulator
     ) {
+    }
+
+    /**
+     * Create instance of ThumbnailGenerator powered with all available drivers.
+     *
+     * @return \Uc\ThumbnailGenerator\ThumbnailGenerator
+     */
+    public function createGenericThumbnailGenerator(): ThumbnailGenerator
+    {
+        return new ThumbnailGenerator(
+            new ImageDriver(
+                $this->imageManipulator
+            ),
+            new AudioDriver(
+                $this->ffmpegProcessor
+            ),
+            new VideoDriver(
+                $this->ffmpegProcessor
+            ),
+            ...$this->createDocumentAwareThumbnailDrivers(),
+        );
     }
 
     /**
@@ -78,15 +99,39 @@ class ThumbnailGeneratorFactory
      */
     public function createDocumentThumbnailGenerator(): ThumbnailGenerator
     {
+        return new ThumbnailGenerator(...$this->createDocumentAwareThumbnailDrivers());
+    }
+
+    /**
+     * Enhances the provided ThumbnailGenerator instance to support WebP thumbnail generation.
+     *
+     * This method accepts a ThumbnailGenerator instance and returns a decorated instance
+     * that is capable of generating thumbnails in the WebP format. The returned
+     * WebPAwareThumbnailGenerator maintains all the original functionality while adding
+     * support for WebP, a modern image format that provides superior compression.
+     *
+     * @param \Uc\ThumbnailGenerator\ThumbnailGenerator $generator The original ThumbnailGenerator instance to be
+     *                                                             enhanced.
+     *
+     * @return \Uc\ThumbnailGenerator\WebPAwareThumbnailGenerator A new instance of WebPAwareThumbnailGenerator that
+     *                                                            supports WebP generation.
+     */
+    public function makeWebPAware(ThumbnailGenerator $generator): WebPAwareThumbnailGenerator
+    {
+        return new WebPAwareThumbnailGenerator($generator, $this->imageManipulator);
+    }
+
+    protected function createDocumentAwareThumbnailDrivers(): array
+    {
         $pdfProcessor = $this->createPdfProcessor();
         $documentProcessor = $this->createDocumentProcessor($pdfProcessor);
 
-        $pdfDriver = new PdfDriver($pdfProcessor);
-        $docxDriver = new DocxDriver($documentProcessor);
-        $odtDriver = new OdtDriver($documentProcessor);
-        $rtfDriver = new RtfDriver($documentProcessor);
-
-        return new ThumbnailGenerator($pdfDriver, $docxDriver, $odtDriver, $rtfDriver);
+        return [
+            new PdfDriver($pdfProcessor),
+            new DocxDriver($documentProcessor),
+            new OdtDriver($documentProcessor),
+            new RtfDriver($documentProcessor),
+        ];
     }
 
     /**
