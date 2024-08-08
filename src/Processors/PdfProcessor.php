@@ -34,16 +34,22 @@ class PdfProcessor
     public function generateThumbnail(UploadedFile $file, int $width, int $height): string|null
     {
         $content = $this->getFirstPageContent($file);
+        if (null === $content) {
+            return null;
+        }
+
         return $this->imageManipulator->resize($content, $width, $height);
     }
 
     /**
+     * Get content of the first page of the PDF document.
+     *
      * @param \Illuminate\Http\UploadedFile $file
      *
-     * @return string
+     * @return string|null
      * @throws \ImagickException
      */
-    protected function getFirstPageContent(UploadedFile $file): string
+    protected function getFirstPageContent(UploadedFile $file): string|null
     {
         try {
             $imagick = new Imagick();
@@ -51,7 +57,7 @@ class PdfProcessor
             $imagick->readImage(sprintf('%s[0]', $file->path()));
             $imagick->setImageFormat('jpeg');
         } catch (ImagickException) {
-            return '';
+            return null;
         }
 
         return $imagick->getImageBlob();

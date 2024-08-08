@@ -143,14 +143,18 @@ class FFMpegProcessor
      * @param int|null            $width
      * @param int|null            $height
      *
-     * @return string
+     * @return string|null
      */
-    protected function getFrameContent(Frame $frame, ?int $width, ?int $height): string
+    protected function getFrameContent(Frame $frame, ?int $width, ?int $height): string|null
     {
         $path = stream_get_meta_data(tmpfile())['uri'];
         $frame->save($path, true);
         $content = @file_get_contents($path);
 
-        return $this->imageManipulator->resize((string)$content, $width, $height);
+        if (empty($content)) {
+            return null;
+        }
+
+        return $this->imageManipulator->resize($content, $width, $height);
     }
 }
