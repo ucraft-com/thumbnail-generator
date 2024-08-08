@@ -10,7 +10,7 @@ use Uc\ThumbnailGenerator\Drivers\ThumbnailGenerationDriverInterface;
 /**
  * Utility to generate thumbnails for specified files.
  *
- * @package App\Services\ThumbnailGenerator
+ * @package Uc\ThumbnailGenerator
  */
 class ThumbnailGenerator
 {

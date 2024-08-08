@@ -5,6 +5,7 @@ Thumbnail Generator is a versatile Laravel package designed to create and manage
 ## Features
 
 - **Multiple File Type Support**: Generate thumbnails from images (JPEG, PNG, GIF), videos, audios, documents, and PDF files.
+- **WebP Support**: Generate WebP thumbnails for better compression and faster load times.
 - **Customizable Dimensions**: Specify the width and height of the thumbnails.
 - **Quality Control**: Adjust the quality of the generated thumbnails to balance between size and visual fidelity.
 - **Aspect Ratio Maintenance**: Automatically maintain the aspect ratio of the original media.
@@ -33,3 +34,17 @@ use Uc\ThumbnailGenerator\ThumbnailGeneratorFactory;
 $factory = new ThumbnailGeneratorFactory(...);
 $gen = $factory->createImageThumbnailGenerator();
 $content = $gen->generate($file, 200, 200);
+```
+#### WebP Thumbnails
+To generate WebP thumbnails, use the makeWebPAware method to decorate the ThumbnailGenerator instance:
+
+```php
+use Uc\ThumbnailGenerator\ThumbnailGeneratorFactory;
+
+$factory = new ThumbnailGeneratorFactory(...);
+$gen = $factory->createImageThumbnailGenerator();
+$webPGen = $factory->makeWebPAware($gen);
+
+// Generate a WebP thumbnail using a decorated instance
+[$content, $webPContent] = $webPGen->generate($file, 200, 200);
+```
